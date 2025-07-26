@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cart</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="cart-container">
+    <h2>Your Cart</h2>
+    <ul id="cartItems"></ul>
+    <h3 id="totalPrice"></h3>
+
+    <h3>Delivery Details</h3>
+    <form id="deliveryForm">
+      <input type="text" id="name" placeholder="Full Name" required/>
+      <input type="text" id="address" placeholder="Address" required/>
+      <input type="tel" id="phone" placeholder="Phone Number" required/>
+      <button type="submit">Cash Out</button>
+    </form>
+  </div>
+
+  <script>
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartItems = document.getElementById("cartItems");
+    let total = 0;
+    cart.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = `${item.item} - ₹${item.price}`;
+      cartItems.appendChild(li);
+      total += item.price;
+    });
+    document.getElementById("totalPrice").textContent = "Total: ₹" + total;
+
+    document.getElementById("deliveryForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const address = document.getElementById("address").value;
+      const phone = document.getElementById("phone").value;
+      alert(`Order placed!\nName: ${name}\nPhone: ${phone}\nTotal: ₹${total}\nDelivery to: ${address}`);
+      localStorage.removeItem("cart");
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>
